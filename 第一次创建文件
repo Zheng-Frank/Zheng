@@ -1,0 +1,31 @@
+url = 'http://xww.csuft.edu.cn/tzgg'
+r = requests.get(url, timeout=30)
+r.raise_for_status()
+r.encoding = r.apparent_encoding
+soup = BeautifulSoup(r.text, 'html.parser', from_encoding='utf-8')
+news = []
+for i in soup.find_all('a'):
+        news.append(i.string)
+news= news[63:]
+print(news)
+    
+
+content= []
+for link in soup.find_all('a'):
+    content.append(link.get('href'))
+content= content[63:]
+content = sorted(set(content),key=content.index)
+for i in range(len(content)):
+    content[i] = content[i][1:]
+
+
+for i in range(len(content)):
+    url2 = url+ content[i]
+    r = requests.get(url2, timeout=30)
+    r.raise_for_status()
+    r.encoding = r.apparent_encoding
+    soup = BeautifulSoup(r.text, 'html.parser', from_encoding='utf-8')
+    article= []
+    for m in soup.find_all('span'):
+        article.append(m.string)
+    print(article)
